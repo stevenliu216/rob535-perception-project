@@ -27,7 +27,6 @@ class ROB535Dataset(Dataset):
         if self.phase == 'train':
             self.df = pd.read_csv(os.path.join(data_dir, 'data-2019', 'trainval', 'labels.csv'))
         elif self.phase == 'test':
-            print('test: {}'.format(data_dir))
             self.df = pd.DataFrame({'guid/image': glob.glob(data_dir+'/data-2019/test/*/*_image.jpg')})
         
         self.data_dir = data_dir

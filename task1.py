@@ -24,10 +24,7 @@ data_transforms = {
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ]),
     'valid': transforms.Compose([
-        #transforms.Resize(256),
         transforms.Resize((224,224)),
-        #transforms.CenterCrop(224),
-        #transforms.CenterCrop(299),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ]),
@@ -39,6 +36,7 @@ data_transforms = {
     ]),
 }
 
+# phase='train' in order to first load the official model and then make adjustments to it
 dataset = ROB535Dataset(data_dir='data/rob535-fall-2019-task-1-image-classification', phase='train', transforms=data_transforms['test'])
 dataloader = DataLoader(dataset, batch_size = 32, shuffle=False)
 
@@ -53,21 +51,16 @@ for param in model.parameters():
 # Create Custom Classifier
 def build_classifier(num_in_features, hidden_layers, num_out_features):
     classifier = torch.nn.Sequential()
-    # when we don't have any hidden layers
-    if hidden_layers == None:      
-        classifier.add_module('fc0', torch.nn.Linear(num_in_features, len(dataset.classes)))    # Change 196 to 4 (4 classes in our dataset)
-    #when we have hidden layers
-    else:
-        layer_sizes = zip(hidden_layers[:-1], hidden_layers[1:])
-        classifier.add_module('fc0', torch.nn.Linear(num_in_features, hidden_layers[0]))
-        classifier.add_module('relu0', torch.nn.ReLU())
-        classifier.add_module('drop0', torch.nn.Dropout(.6))
-        
-        for i, (h1, h2) in enumerate(layer_sizes):
-            classifier.add_module('fc'+str(i+1), torch.nn.Linear(h1, h2))
-            classifier.add_module('relu'+str(i+1), torch.nn.ReLU())
-            classifier.add_module('drop'+str(i+1), torch.nn.Dropout(.5))
-        classifier.add_module('output', torch.nn.Linear(hidden_layers[-1], num_out_features))
+    layer_sizes = zip(hidden_layers[:-1], hidden_layers[1:])
+    classifier.add_module('fc0', torch.nn.Linear(num_in_features, hidden_layers[0]))
+    classifier.add_module('relu0', torch.nn.ReLU())
+    classifier.add_module('drop0', torch.nn.Dropout(.6))
+    
+    for i, (h1, h2) in enumerate(layer_sizes):
+        classifier.add_module('fc'+str(i+1), torch.nn.Linear(h1, h2))
+        classifier.add_module('relu'+str(i+1), torch.nn.ReLU())
+        classifier.add_module('drop'+str(i+1), torch.nn.Dropout(.5))
+    classifier.add_module('output', torch.nn.Linear(hidden_layers[-1], num_out_features))
         
     return classifier
 
@@ -108,17 +101,18 @@ with torch.no_grad():
     predicted_class = []
     for inputs in test_dataloader:
         inputs = inputs.to(device)
-        #labels = labels.to(device)
         outputs = model(inputs)
         _, pred = torch.max(outputs, 1) 
 
         for i in range(len(inputs)):
             file_names.append(image_names[i])
-            #predicted_car.append(int(pred[i] + 1))
-            # Is there an off-by-1 error?
             predicted_car.append(int(pred[i]))
 results.append((file_names, predicted_car))
+image_names_str = [str(_) for _ in image_names]
 df = pd.DataFrame({'guid/image': image_names, 'label': results[0][1]})
+df.to_csv('pre_predictions1.csv', index=False)
+df = pd.DataFrame({'guid/image': image_names_str, 'label': results[0][1]})
+
 df.to_csv('pre_predictions2.csv', index=False)
 df['guid/image'] = df['guid/image'].str.replace('data/rob535-fall-2019-task-1-image-classification/data-2019/test/','')
 df['guid/image'] = df['guid/image'].str.replace('_image.jpg','')
