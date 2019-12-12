@@ -53,11 +53,11 @@ for param in model.parameters():
   
 # Create Custom Classifier
 hidden_layers = [1000]
-new_classifier = nn.Sequential()
-new_classifier.add_module('fc0', nn.Linear(num_in_features, hidden_layers[0]))
-new_classifier.add_module('relu0', nn.ReLU())
-new_classifier.add_module('drop0', nn.Dropout(.6))
-new_classifier.add_module('output', nn.Linear(hidden_layers[0], 4))
+new_classifier = torch.nn.Sequential()
+new_classifier.add_module('fc0', torch.nn.Linear(num_in_features, hidden_layers[0]))
+new_classifier.add_module('relu0', torch.nn.ReLU())
+new_classifier.add_module('drop0', torch.nn.Dropout(.6))
+new_classifier.add_module('output', torch.nn.Linear(hidden_layers[0], 4))
 
  # Defining model hyperparameters
 model.fc = new_classifier
@@ -71,14 +71,11 @@ else:
     model.load_state_dict(torch.load('models/team10_trained_resnext_epoch5.pt'))
 model.to(device)
 
-'''
-#This prints a summary of the network
 from torchsummary import summary
 if device == 'cpu':
     summary(model.cpu(), (3,224,224))
 elif device == 'cuda':
     summary(model.cuda(), (3,224,224))
-'''
 
 test_dir = 'data/rob535-fall-2019-task-1-image-classification'
 with torch.no_grad():
@@ -102,8 +99,7 @@ with torch.no_grad():
     for inputs in test_dataloader:
         inputs = inputs.to(device)
         outputs = model(inputs)
-        _, pred = torch.max(outputs, 1) 
-        print(pred)
+        _, pred = torch.max(outputs, 1)
 
         for i in range(len(inputs)):
             file_names.append(image_names[i])
