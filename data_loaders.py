@@ -41,14 +41,15 @@ class ROB535Dataset(Dataset):
             idx = idx.tolist()
 
         if self.phase == 'train':
-            image_name = self.data_dir + self.df.iloc[index, 0] + '_image.jpg'
+            image_name = os.path.join(self.data_dir,'data-2019','trainval',self.df.iloc[index, 0] + '_image.jpg')
             image = Image.open(image_name)
             if self.transforms is not None:
                 image = self.transforms(image)
             label = self.df.iloc[index, 1]
+            return image, label
         elif self.phase == 'test':
             image_name = self.df.iloc[index, 0]
             image = Image.open(image_name)
             if self.transforms is not None:
                 image = self.transforms(image)
-        return image
+            return image
