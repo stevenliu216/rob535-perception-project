@@ -66,9 +66,9 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 sched = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', patience=3, threshold = 0.9)
 
 if not train_on_gpu:
-    model.load_state_dict(torch.load('models/team10_trained_resnext_epoch5.pt', map_location=torch.device('cpu')))
+    model.load_state_dict(torch.load('models/team10_trained_resnext50_final.pt', map_location=torch.device('cpu')))
 else:
-    model.load_state_dict(torch.load('models/team10_trained_resnext_epoch5.pt'))
+    model.load_state_dict(torch.load('models/team10_trained_resnext50_final.pt'))
 model.to(device)
 
 from torchsummary import summary
