@@ -19,7 +19,7 @@ $ kaggle competitions download -c rob535-fall-2019-task-1-image-classification
 Unzip the downloaded data into the `data/` directory as follows:
 ```
 data
-├── rob535-fall-2019-task-1-image-classification
+└── rob535-fall-2019-task-1-image-classification
 ```
 
 We pretrained a model based on ResNeXt-50 and uploaded to google drive [here](https://drive.google.com/file/d/1-63b76I54aiyGQl5ZR_7Qkjm3RT-HpfN/view?usp=sharing). Before running the test code, download this model and place it in the `models/` directory:

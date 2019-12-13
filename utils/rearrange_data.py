@@ -1,3 +1,5 @@
+'''This script was used to rearrange the provided dataset into one that works with pytorch's ImageFolder class.
+Later, we implemented custom dataset object so this is not used anymore.'''
 import pandas as pd
 import os
 import shutil
