@@ -35,7 +35,8 @@ models
 ```
 
 ## Task 1
-The following command will use the pretrained model to evaluate the data. It will output a new file called `predictions.csv`. Warning: If on CPU, this will take a few minutes (~6 minutes):
+The following command will use the pretrained model to evaluate the data. It will output a new file called `predictions.csv`. 
+> Caution: If on CPU, this will take a while to run since we are evaluating (300x600) images.
 ```bash
 $ python task1.py
 ```
@@ -49,8 +50,8 @@ $ kaggle competitions submit -c rob535-fall-2019-task-1-image-classification -f 
 Optional for 20 bonus points. We did not try it yet.
 
 ## Additional information
-The model is trained on a Tesla K80 GPU provided by Google Colab. Refer to `colab/transfer_learning.ipynb` for details. The final trained model is stored in [Google Drive](https://drive.google.com/file/d/1-63b76I54aiyGQl5ZR_7Qkjm3RT-HpfN/view?usp=sharing).
+The model is trained on a Tesla K80 GPU provided by Google Colab. Refer to `colab/final_notebook.ipynb` for details. The final trained model is stored in [Google Drive](https://drive.google.com/open?id=1-2cgI0k2b3fQSPZ_qPz5Co8iBLyM4WKk).
 
 ### Kaggle Competition links
-[Task1](https://www.kaggle.com/c/rob535-fall-2019-task-1-image-classification)
-[Task2](https://www.kaggle.com/c/rob535-fall-2019-task-2-vehicle-localization)
+- [Task1](https://www.kaggle.com/c/rob535-fall-2019-task-1-image-classification)
+- [Task2](https://www.kaggle.com/c/rob535-fall-2019-task-2-vehicle-localization)

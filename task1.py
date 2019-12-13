@@ -21,19 +21,20 @@ train_on_gpu = torch.cuda.is_available()
 data_transforms = {
     'train': transforms.Compose([
         transforms.RandomRotation(30),
-        transforms.Resize((224,224)),
+        transforms.Resize((300,600)),
+        transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.4),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ]),
     'valid': transforms.Compose([
-        transforms.Resize((224,224)),
+        transforms.Resize((300,600)),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ]),
     
     'test': transforms.Compose([
-        transforms.Resize((224,224)),   
+        transforms.Resize((300,600)),   
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])
     ]),
